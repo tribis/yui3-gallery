@@ -41,7 +41,7 @@ var PX = 'px',
         IMG_CLOSE_TPL = '/>',
         BORDERS_COLOR = POUND + '99cccc',
         BORDER_PIX_IMG = 'pix-blue.gif',
-        BORDER_PIX_URL = PATH_TO_IMAGES + BORDER_PIX_IMG,
+        BORDER_PIX_URL = BORDER_PIX_IMG,
         FULL_DESKTOP = {
             wrapper: 'page_wrapper',
             crown: 'crown',
@@ -251,10 +251,9 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                         DRAG_HERE_IMG_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(DRAG_HERE_IMG_CONF);
                         Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.main).setStyle(BACKGROUNDIMAGE, 'url("' + DRAG_HERE_IMG_URL + '")');
 
-                        BORDER_PIX_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(BORDER_PIX_CONF);
-
                         if (i === BORDER_PIX_CONF || i === PATH_TO_IMAGES_CONF) {
-                            Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.nw).setStyle(BACKGROUNDIMAGE, BORDER_PIX_URL);
+                        	BORDER_PIX_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(BORDER_PIX_CONF);
+                            Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.nw).setStyle(BACKGROUNDIMAGE, 'url("' + BORDER_PIX_URL + '")');
                         }
                         /* create handle and place it in resizer div */
                         if (i === HANDLE_IMG_CONF || i === PATH_TO_IMAGES_CONF) {
@@ -301,15 +300,18 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             /* some events to be used by subclasses to focus on diff areas */
 
             this.publish(E_ENTER + E_MAIN, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
 
             this.publish(E_ENTER + E_NE, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
 
             this.publish(E_ENTER + E_NW, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
             
             this.publish(E_DRAG + E_INIT, {
@@ -562,4 +564,4 @@ hence the current x y is not necessarily at the bottom left corner of the window
     Y.namespace('Widget').SplitDesktop = SplitDesktop;
 
 
-}, 'gallery-2011.06.01-20-18' ,{requires:['widget','dd-constrain','event-hover']});
+}, '@VERSION@' ,{requires:['widget','dd-constrain','event-hover']});

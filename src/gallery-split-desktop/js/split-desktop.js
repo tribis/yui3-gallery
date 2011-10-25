@@ -298,15 +298,18 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             /* some events to be used by subclasses to focus on diff areas */
 
             this.publish(E_ENTER + E_MAIN, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
 
             this.publish(E_ENTER + E_NE, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
 
             this.publish(E_ENTER + E_NW, {
-                bubbles: true
+                bubbles: true,
+                broadcast: 2
             });
             
             this.publish(E_DRAG + E_INIT, {
