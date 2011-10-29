@@ -356,4 +356,4 @@ Y.extend(InlineXhr, Y.Base, {
 Y.Base.InlineXhr = InlineXhr;
 
 
-}, '@VERSION@' ,{optional:['io-form'], requires:['json-parse', 'node', 'io-base', 'base']});
+}, 'gallery-2011.10.27-17-03' ,{optional:['io-form'], requires:['json-parse', 'node', 'io-base', 'base']});
