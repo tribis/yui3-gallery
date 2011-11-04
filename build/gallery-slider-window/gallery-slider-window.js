@@ -387,7 +387,7 @@ YUI.add('gallery-slider-window', function(Y) {
                 {
                     emitFacade: false,/*substitue with the e (this) passed to this._passThroughEvent*/
                     bubbles: true,
-                    broadcast: true/*Y is able to catch it*/
+                    broadcast: 2/*Y is able to catch it*/
                     
                 });
                 //delegate a DOM event, pass to the handler the custom event name, but the original event
