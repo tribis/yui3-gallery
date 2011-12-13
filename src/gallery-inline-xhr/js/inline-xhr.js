@@ -263,26 +263,33 @@ Y.extend(InlineXhr, Y.Base, {
 		 * The wizard method is a short form of the following:
 		 * 
 		 * var requester,fnName ='myFunctionName',action,formID = 'myFormId',tag = 'idForNextStep';
-		 * action = xhr.getAfter('create_new_account');
-		 * xhr.after(fnName,function(tag){var action = Y.one("#" + tag).get('value')},Y, tag);
+		 * action = xhr.getAfter('myFunctionName');
+		 * xhr.after(fnName,function(tag){var action = Y.one("#" + tag).get('value'); return action},Y, tag); 
 		 * xhr.register(requester,fnName,action,'#' + formID).request();
 		 *
 		 * Instead do:
-		 * xhr.wizard({fnName:'myFunctionName', formId: 'myFormId', tag: 'idForNextStep'}).request();
-		 * 
+		 * xhr.wizard({fnName:'myFunctionName', formId: 'myFormId', tag: 'idForNextStep', start: 'value_used_at_start'}).request();
+		 * start and formId are optional.
+		 * Use as
+		 * 			start: false, or just omit it, else use
+		 * 			start: 'value_at_start'
 		 * The server script (a function, class method or Smarty plugin) named <fnName> displays
 		 * a page where a hidden input by id=<tag> has a value containing a string representing
 		 * the next switch case, that is meant to be processed by the server script itself.
 		 * inlineXHR will send a request with a param named as required. The parameter itself (not it's value)
 		 * will be used by the server script to process the request.
 		 * The request will contain also the params passed via the form having id = <formID>.
+		 *
+		 * In case the wizard is starting by loading a form and, as a consequence, there is no
+		 * tag to be used at start, do pass a "start: 'value'" configuration. The 'value' will
+		 * be used as the guiding parameter. Otherwise use "start: false" or just omit it.
 		 * 
 		 **/
 		wizard : function (oCfg) {
 			var fnName = oCfg.fnName,
 				tag = oCfg.tag,
 				requester,
-				action = oCfg.start ? null : this.getAfter(fnName),
+				action = oCfg.start ? oCfg.start : this.getAfter(fnName),
 				args = [requester, fnName, action],
 				formId = oCfg.formId ? POUND + oCfg.formId : null;
 				if(formId){

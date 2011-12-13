@@ -284,7 +284,7 @@ Y.extend(InlineXhr, Y.Base, {
 			var fnName = oCfg.fnName,
 				tag = oCfg.tag,
 				requester,
-				action = oCfg.start ? null : this.getAfter(fnName),
+				action = oCfg.start ? oCfg.start : this.getAfter(fnName),
 				args = [requester, fnName, action],
 				formId = oCfg.formId ? POUND + oCfg.formId : null;
 				if(formId){
@@ -358,4 +358,4 @@ Y.extend(InlineXhr, Y.Base, {
 Y.Base.InlineXhr = InlineXhr;
 
 
-}, 'gallery-2011.10.27-17-03' ,{optional:['io-form'], requires:['json-parse', 'node', 'io-base', 'base']});
+}, '@VERSION@' ,{optional:['io-form'], requires:['json-parse', 'node', 'io-base', 'base']});
