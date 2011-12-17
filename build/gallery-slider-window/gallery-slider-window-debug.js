@@ -401,11 +401,7 @@ YUI.add('gallery-slider-window', function(Y) {
                 {
                     emitFacade: false,/*substitue with the e (this) passed to this._passThroughEvent*/
                     bubbles: true,
-<<<<<<< HEAD
                     broadcast: 2/*Y is able to catch it*/
-=======
-                    broadcast: true/*Y is able to catch it*/
->>>>>>> upstream/master
                     
                 });
                 //delegate a DOM event, pass to the handler the custom event name, but the original event
@@ -634,4 +630,4 @@ YUI.add('gallery-slider-window', function(Y) {
     Y.namespace("Overlay").SliderWindow = SliderWindow;
 
 
-}, 'gallery-2011.11.10-16-24' ,{requires:['overlay', 'node', 'anim-base','anim-node','anim-easing', 'substitute']});
+}, '@VERSION@' ,{requires:['overlay', 'node', 'anim-base','anim-node','anim-easing', 'substitute']});
