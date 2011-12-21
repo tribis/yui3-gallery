@@ -281,4 +281,4 @@ YUI.add('gallery-progress-bar', function(Y) {
 
 
 
-}, '@VERSION@' ,{requires:['widget','anim','base-build']});
+}, '@VERSION@' ,{requires:['widget','substitute','anim-base']});
