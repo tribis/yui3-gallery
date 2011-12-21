@@ -11,6 +11,7 @@ YUI.add('gallery-progress-bar', function(Y) {
         renderUI: function() {
             this.get('contentBox').append(LANG.sub(this.get('layout'), {
                 sliderClass: this.getClassName('slider'),
+                wrapperClass: this.getClassName('slider','wrapper'),
                 labelClass: this.getClassName('label')
             }));
         },
@@ -265,4 +266,4 @@ YUI.add('gallery-progress-bar', function(Y) {
 
 
 
-}, 'gallery-2011.02.09-21-32' ,{requires:['widget','anim','base-build']});
+}, '@VERSION@' ,{requires:['widget','anim','base-build']});

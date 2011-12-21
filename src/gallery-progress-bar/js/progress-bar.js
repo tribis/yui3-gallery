@@ -10,6 +10,7 @@
             Y.log('renderUI', 'info', 'Y.ProgressBar');
             this.get('contentBox').append(LANG.sub(this.get('layout'), {
                 sliderClass: this.getClassName('slider'),
+                wrapperClass: this.getClassName('slider','wrapper'),
                 labelClass: this.getClassName('label')
             }));
         },
