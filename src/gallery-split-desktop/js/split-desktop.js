@@ -209,29 +209,32 @@ Corresponding nodes are fetched after configuration based on updated selector
         initializer: function (config) {
             var BASE_URL = this.get('baseUrl'),
                 i,
-                HANDLE_IMG_URL = BASE_URL + PATH_TO_IMAGES + HANDLE_IMG;
+                HANDLE_IMG_URL = BASE_URL + PATH_TO_IMAGES + HANDLE_IMG,
+				ne,
+				m,
+				c;
                 
             HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
             
-            Y.log('HANDLE_IMG_TPL ' + HANDLE_IMG_TPL, 'info', SplitDesktop.NAME);
+            Y.log('HANDLE_IMG_TPL ' + HANDLE_IMG_TPL, 'info', SplitDesktop.NAME);			
             for (i in config) {
                 if (config.hasOwnProperty(i)) {
                     Y.log('initializer is checking user config for: ' + i, 'info', SplitDesktop.NAME);
                     switch (i) {
                     case PAGE_WIDTH_CONF:
                        PAGE_DEF_WIDTH = this.get(i);
-                        var ne = PAGE_DEF_WIDTH - NW_MIN_WIDTH;/* */
-                        var m = PAGE_DEF_WIDTH + 21;
+                        ne = PAGE_DEF_WIDTH - NW_MIN_WIDTH;/* */
+                        m = PAGE_DEF_WIDTH + 21;
                         /* nw div is always 150 and comes auto from page_wrapper - ne */
                         Y.log('initializer is updating ' + i + ' with: ' + config[i] + PX, 'info', SplitDesktop.NAME);
-                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.wrapper).setStyle('width', PAGE_DEF_WIDTH);
+                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.wrapper).setStyle('width', PAGE_DEF_WIDTH + PX);
                         /*adjust ne accordingly */
-                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.ne).setStyle('width', ne);
+                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.ne).setStyle('width', ne + PX);
                         /* resize ea_body_main accordingly */
-                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.main).setStyle('width', m);
+                        Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.main).setStyle('width', m + PX);
                         break;
                     case BORDERS_COLOR_CONF:
-                        var c = this.get(BORDERS_COLOR_CONF); /**/
+                        c = this.get(BORDERS_COLOR_CONF); /**/
                         Y.log('initializer is updating ' + i + ' with: ' + config[i], 'info', SplitDesktop.NAME);
                         Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.borders).setStyle('borderLeftColor', c).setStyle('borderBottomColor', c);
                         Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.wrapper).setStyle('borderColor', c);
@@ -250,7 +253,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                         Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.main).setStyle(BACKGROUNDIMAGE, 'url("' + DRAG_HERE_IMG_URL + '")');
 
                         if (i === BORDER_PIX_CONF || i === PATH_TO_IMAGES_CONF) {
-                        	BORDER_PIX_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(BORDER_PIX_CONF);
+                            BORDER_PIX_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(BORDER_PIX_CONF);
                             Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.nw).setStyle(BACKGROUNDIMAGE, 'url("' + BORDER_PIX_URL + '")');
                         }
                         /* create handle and place it in resizer div */
@@ -442,12 +445,12 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             resizerNode.setStyle(WIDTH, totW);
             resizerNode.setStyle(HEIGHT, totH);
 
-            secondaryNode.setStyle(WIDTH, PAGE_DEF_WIDTH - totW + MARGIN);
-            secondaryNode.setStyle(HEIGHT, totH);
+            secondaryNode.setStyle(WIDTH, PAGE_DEF_WIDTH - totW + MARGIN + PX);
+            secondaryNode.setStyle(HEIGHT, totH + PX);
         },
 
         _onDragEnd : function (e) {
-            /*
+/*
 reposition to 00 pos in resizer window
 the window width might have changed from the drag:start due to scrollbars,
 hence the current x y is not necessarily at the bottom left corner of the window
@@ -459,6 +462,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
                 
         _getBaseUrl : function () {
             Y.log("setting baseurl. Dumping config if Y.dump is present", 'info', SplitDesktop.NAME);
+			var url;
            if(Y.dump){ Y.log(Y.dump(Y.config));}
             if(Y.config.modules){
                 if(Y.config.modules[GALLERYSPLITDESKTOP]){
@@ -471,7 +475,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
                     }else if(Y.config.modules[GALLERYSPLITDESKTOP].fullpath){
                         //extract root, assets relative to root
                         Y.log("Baseurl based on fullpath for this module", 'info', SplitDesktop.NAME);
-                        var url = Y.config.modules[GALLERYSPLITDESKTOP].fullpath;
+                        url = Y.config.modules[GALLERYSPLITDESKTOP].fullpath;
                         return url.substring(0,url.lastIndexOf('/')+1);
                         
                     }else if(Y.config.modules.base){
@@ -486,7 +490,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
 
             }else if(Y.config.fullpath){
                 //extract root, assets relative to root
-                var url = Y.config.fullpath;
+                url = Y.config.fullpath;
                 Y.log("Baseurl based on general fullpath", 'info', SplitDesktop.NAME);
                 return url.substring(0,url.lastIndexOf('/')+1);
                 
@@ -550,7 +554,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
             Y.log("Repositioning handle", 'info', SplitDesktop.NAME);
             handleImgNode.setStyle('left', '0px');
             if(val){
-                secondaryNode.setStyle(HEIGHT, val);
+                secondaryNode.setStyle(HEIGHT, val + PX);
             }
             handleImgNode.setStyle('bottom', '0px');
             handleImgNode.setStyle('top', '');
