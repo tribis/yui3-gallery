@@ -453,7 +453,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
         },
                 
         _getBaseUrl : function () {
-			var url
+			var url;
             if(Y.config.modules){
                 if(Y.config.modules[GALLERYSPLITDESKTOP]){
                     /* defined as single module */

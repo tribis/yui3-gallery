@@ -464,7 +464,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
                 
         _getBaseUrl : function () {
             Y.log("setting baseurl. Dumping config if Y.dump is present", 'info', SplitDesktop.NAME);
-			var url
+			var url;
            if(Y.dump){ Y.log(Y.dump(Y.config));}
             if(Y.config.modules){
                 if(Y.config.modules[GALLERYSPLITDESKTOP]){
