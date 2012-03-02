@@ -77,8 +77,6 @@ Corresponding nodes are fetched after configuration based on updated selector
         MAIN_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.main,
         WRAPPER_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.wrapper,
         /* static vars used by reposition script */
-        resizerNode = null,
-        secondaryNode = null,
         mainNode = null,
         handleImgNode = null,
         ddHandle = null,
@@ -213,10 +211,10 @@ Corresponding nodes are fetched after configuration based on updated selector
 				c;
                 
             HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
-            resizerNode = Y.one(RESIZER_SELECTOR);
-            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, resizerNode);
-            resizerNode.append(handleImgNode);
-			secondaryNode = Y.one(SECONDARY_SELECTOR);
+            this.resizerNode = Y.one(RESIZER_SELECTOR);
+            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, this.resizerNode);
+            this.resizerNode.append(handleImgNode);
+			this.secondaryNode = Y.one(SECONDARY_SELECTOR);
             Y.log('HANDLE_IMG_TPL ' + HANDLE_IMG_TPL, 'info', SplitDesktop.NAME);			
             for (i in config) {
                 if (config.hasOwnProperty(i)) {
@@ -412,8 +410,8 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                 
             case true:
                 this.fire(E_DRAG + E_START);
-                h = parseInt(resizerNode.getStyle(HEIGHT).toString().replace(PX, ''), 10);
-                w = parseInt(resizerNode.getStyle(WIDTH).toString().replace(PX, ''), 10);
+                h = parseInt(this.resizerNode.getStyle(HEIGHT).toString().replace(PX, ''), 10);
+                w = parseInt(this.resizerNode.getStyle(WIDTH).toString().replace(PX, ''), 10);
                 started = true;
                 break;
             }
@@ -421,8 +419,6 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
 
         _onDragDrag : function (e) {
 			Y.log("_onDragDrag", 'info', SplitDesktop.NAME);
-            
-            resizerNode = Y.one(RESIZER_SELECTOR);
 
             /* get values */
             var deltaW = parseInt(e.info.offset[0], 10),
@@ -445,11 +441,11 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             this._isPaneClosed(IS_CLOSE_NW_CONF, E_NW, cutOffNwClosed, totW, true);
             this._isPaneClosed(IS_CLOSE_NE_CONF, E_NE, cutOffNeClosed, totW, false);
             this._isPaneClosed(IS_CLOSE_CROWN_CONF, E_CROWN, cutOffCrownClosed, totH, false);
-            resizerNode.setStyle(WIDTH, totW);
-            resizerNode.setStyle(HEIGHT, totH);
+            this.resizerNode.setStyle(WIDTH, totW);
+            this.resizerNode.setStyle(HEIGHT, totH);
 
-            secondaryNode.setStyle(WIDTH, PAGE_DEF_WIDTH - totW + MARGIN + PX);
-            secondaryNode.setStyle(HEIGHT, totH + PX);
+            this.secondaryNode.setStyle(WIDTH, PAGE_DEF_WIDTH - totW + MARGIN + PX);
+            this.secondaryNode.setStyle(HEIGHT, totH + PX);
         },
 
         _onDragEnd : function (e) {
@@ -567,7 +563,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
             Y.log("Repositioning handle", 'info', SplitDesktop.NAME);
             handleImgNode.setStyle('left', '0px');
             if(val){
-                secondaryNode.setStyle(HEIGHT, val + PX);
+                this.secondaryNode.setStyle(HEIGHT, val + PX);
             }
             handleImgNode.setStyle('bottom', '0px');
             handleImgNode.setStyle('top', '');
