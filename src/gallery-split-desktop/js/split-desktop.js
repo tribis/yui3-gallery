@@ -150,9 +150,6 @@ Corresponding nodes are fetched after configuration based on updated selector
         borderPixImg: {
             value: BORDER_PIX_URL
         },
-        markupIsValidated : {
-            value: null
-        },
         handleImg: {
             value: HANDLE_IMG
         },
