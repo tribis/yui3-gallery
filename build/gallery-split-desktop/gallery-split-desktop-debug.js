@@ -39,6 +39,7 @@ var PX = 'px',
         SRC_OPEN_TPL = 'src="',
         SRC_CLOSE_TPL = '" ',
         IMG_CLOSE_TPL = '/>',
+		CLASS_ACTIVE_TPL = ' class="sdt-active" ',
         BORDERS_COLOR = POUND + '99cccc',
         BORDER_PIX_IMG = 'pix-blue.gif',
         BORDER_PIX_URL = BORDER_PIX_IMG,
@@ -212,7 +213,7 @@ Corresponding nodes are fetched after configuration based on updated selector
 				m,
 				c;
                 
-            HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
+            HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + CLASS_ACTIVE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
             this.resizerNode = Y.one(RESIZER_SELECTOR);
             handleImgNode = Y.Node.create(HANDLE_IMG_TPL, this.resizerNode);
             this.resizerNode.append(handleImgNode);
@@ -261,7 +262,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                         if (i === HANDLE_IMG_CONF || i === PATH_TO_IMAGES_CONF) {
                             DEF_PREFIX = this.get(PREFIX_CONF);
                             HANDLE_IMG_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(HANDLE_IMG_CONF);
-                            HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
+                            HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + CLASS_ACTIVE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
                         }
                         break;
                     case DRAG_HERE_LEFT_CONF:
@@ -293,7 +294,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                         MAIN_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.main;
                         WRAPPER_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.wrapper;
                         /* update img tpl with new prefix */
-                        HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
+                        HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + CLASS_ACTIVE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
                         break;
                     }
                 }
