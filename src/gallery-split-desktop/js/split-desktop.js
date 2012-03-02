@@ -345,17 +345,17 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             this._over = function (e) {
                 switch (POUND + e.currentTarget.get('id')){
                 case SECONDARY_SELECTOR:
-                    if(!this.get("isDragging")){
+                    if(!this.get(ISDRAGGING_CONF)){
                         this.fire(E_ENTER + E_NW);
                     }
                     break;
                 case RESIZER_SELECTOR:
-                    if(!this.get("isDragging")){
+                    if(!this.get(ISDRAGGING_CONF)){
                         this.fire(E_ENTER + E_NE);
                     }
                     break;
                 case MAIN_SELECTOR:
-                    if(!this.get("isDragging")){
+                    if(!this.get(ISDRAGGING_CONF)){
                         this.fire(E_ENTER + E_MAIN);
                     }
                     break;
