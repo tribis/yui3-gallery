@@ -209,6 +209,7 @@ Corresponding nodes are fetched after configuration based on updated selector
     Y.extend(SplitDesktop, Y.Widget, {
 
         initializer: function (config) {
+			Y.log("initializer", 'info', SplitDesktop.NAME);
             var BASE_URL = this.get('baseUrl'),
                 i,
                 HANDLE_IMG_URL = BASE_URL + PATH_TO_IMAGES + HANDLE_IMG,
@@ -217,7 +218,10 @@ Corresponding nodes are fetched after configuration based on updated selector
 				c;
                 
             HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
-            
+            resizerNode = Y.one(RESIZER_SELECTOR);
+            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, resizerNode);
+            resizerNode.append(handleImgNode);
+			secondaryNode = Y.one(SECONDARY_SELECTOR);
             Y.log('HANDLE_IMG_TPL ' + HANDLE_IMG_TPL, 'info', SplitDesktop.NAME);			
             for (i in config) {
                 if (config.hasOwnProperty(i)) {
@@ -372,10 +376,8 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         renderUI : function () {
-
-            resizerNode = Y.one(RESIZER_SELECTOR);
-            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, resizerNode);
-            resizerNode.append(handleImgNode);
+			Y.log("renderUI", 'info', SplitDesktop.NAME);
+            
             /* make the handle draggable */
             ddHandle = new Y.DD.Drag({node: POUND + DEF_PREFIX + HANDLE_ID});
             ddHandle.plug(Y.Plugin.DDConstrained, {
@@ -384,6 +386,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         bindUI : function () {
+			Y.log("bindUI", 'info', SplitDesktop.NAME);
             ddHandle.on('drag:start', this._onDragStart, this);
             ddHandle.on('drag:drag', this._onDragDrag, this);
             ddHandle.on('drag:end', this._onDragEnd, this);
@@ -391,6 +394,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         syncUI : function () {
+			Y.log("syncUI", 'info', SplitDesktop.NAME);
             /* Now make the page visible */
             Y.one(HTML).setStyle('display', 'block');
 
@@ -402,6 +406,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
 */
 
         _onDragStart : function (e) {
+			Y.log("_onDragStart", 'info', SplitDesktop.NAME);
             /* remove background from main */
             mainNode = Y.one(MAIN_SELECTOR);
             this.set(ISDRAGGING_CONF, true);
@@ -420,7 +425,8 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         _onDragDrag : function (e) {
-            secondaryNode = Y.one(SECONDARY_SELECTOR);
+			Y.log("_onDragDrag", 'info', SplitDesktop.NAME);
+            
             resizerNode = Y.one(RESIZER_SELECTOR);
 
             /* get values */
@@ -452,6 +458,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         _onDragEnd : function (e) {
+			Y.log("_onDragEnd", 'info', SplitDesktop.NAME);
 /*
 reposition to 00 pos in resizer window
 the window width might have changed from the drag:start due to scrollbars,
@@ -503,30 +510,37 @@ hence the current x y is not necessarily at the bottom left corner of the window
         },
                 
         _getMain : function () {
+			Y.log("_getMain", 'info', SplitDesktop.NAME);
             return Y.one(MAIN_SELECTOR);
         },
                 
         _getSecondary : function () {
+			Y.log("_getSecondary", 'info', SplitDesktop.NAME);
             return Y.one(SECONDARY_SELECTOR);
         },
                 
         _getResizer : function () {
+			Y.log("_getResizer", 'info', SplitDesktop.NAME);
             return Y.one(RESIZER_SELECTOR);
         },
         
         _validateCloseCrownHeight : function (val) {
+			Y.log("_validateCloseCrownHeight", 'info', SplitDesktop.NAME);
             return (val >= this.get(CROWN_HEIGHT_CONF));
         },
         
         _validateCloseNWWidth : function (val) {
+			Y.log("_validateCloseNWWidth", 'info', SplitDesktop.NAME);
             return (val >= 0 && val <= parseInt(this.get(PAGE_WIDTH_CONF).replace(PX, ''), 10) / 4);
         },
                 
         _validateCloseNEWidth : function (val) {
+			Y.log("_validateCloseNEWidth", 'info', SplitDesktop.NAME);
             return (val >= 0 && val <= parseInt(this.get(PAGE_WIDTH_CONF).replace(PX, ''), 10) / 4);
         },
            
         _isPaneClosed : function (confName, eventType, cutOffVal, actualVal, direction) {
+			Y.log("_isPaneClosed", 'info', SplitDesktop.NAME);
             /* close/open events for NW */
             /* NW behaves in opposite direction: use false */
             if(!this.get(confName)){
@@ -544,10 +558,12 @@ hence the current x y is not necessarily at the bottom left corner of the window
             }
         },
         _evalLimits : function (operation, bit){
+			Y.log("_evalLimits", 'info', SplitDesktop.NAME);
             return bit ? operation : !operation;
         },
         /*some configuration function */
         _setCrownHeight : function (val) {
+			Y.log("_setCrownHeight", 'info', SplitDesktop.NAME);
             DEF_PREFIX = this.get(PREFIX_CONF);
             Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.ne).setStyle(HEIGHT, val + PX);
             this._repositionHandle(val);

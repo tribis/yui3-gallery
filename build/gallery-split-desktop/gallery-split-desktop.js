@@ -217,7 +217,10 @@ Corresponding nodes are fetched after configuration based on updated selector
 				c;
                 
             HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
-            
+            resizerNode = Y.one(RESIZER_SELECTOR);
+            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, resizerNode);
+            resizerNode.append(handleImgNode);
+			secondaryNode = Y.one(SECONDARY_SELECTOR);
             for (i in config) {
                 if (config.hasOwnProperty(i)) {
                     switch (i) {
@@ -362,10 +365,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         renderUI : function () {
-
-            resizerNode = Y.one(RESIZER_SELECTOR);
-            handleImgNode = Y.Node.create(HANDLE_IMG_TPL, resizerNode);
-            resizerNode.append(handleImgNode);
+            
             /* make the handle draggable */
             ddHandle = new Y.DD.Drag({node: POUND + DEF_PREFIX + HANDLE_ID});
             ddHandle.plug(Y.Plugin.DDConstrained, {
@@ -410,7 +410,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
         },
 
         _onDragDrag : function (e) {
-            secondaryNode = Y.one(SECONDARY_SELECTOR);
+            
             resizerNode = Y.one(RESIZER_SELECTOR);
 
             /* get values */
