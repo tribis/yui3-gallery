@@ -1,6 +1,6 @@
 YUI.add('gallery-split-desktop', function(Y) {
 
-var PX = 'px',
+    var PX = 'px',
         POUND = '#',
         HTML = 'HTML',
         WIDTH = 'width',
@@ -40,7 +40,7 @@ var PX = 'px',
         SRC_OPEN_TPL = 'src="',
         SRC_CLOSE_TPL = '" ',
         IMG_CLOSE_TPL = '/>',
-		CLASS_ACTIVE_TPL = ' class="sdt-active" ',
+        CLASS_ACTIVE_TPL = ' class="sdt-active" ',
         BORDERS_COLOR = POUND + '99cccc',
         BORDER_PIX_IMG = 'pix-blue.gif',
         BORDER_PIX_URL = BORDER_PIX_IMG,
@@ -73,10 +73,10 @@ var PX = 'px',
         IS_CLOSE_CROWN_CONF = 'isCloseCrown',
         IS_CLOSE_NW_CONF = 'isCloseNW',
         IS_CLOSE_NE_CONF = 'isCloseNE',
-        /*
-default provided here, updated if PREFIX is customized.
-Corresponding nodes are fetched after configuration based on updated selector
-*/
+    /*
+    default provided here, updated if PREFIX is customized.
+    Corresponding nodes are fetched after configuration based on updated selector
+    */
         RESIZER_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.ne,
         SECONDARY_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.nwbody,
         MAIN_SELECTOR = POUND + DEF_PREFIX + FULL_DESKTOP.main,
@@ -94,17 +94,17 @@ Corresponding nodes are fetched after configuration based on updated selector
         cutOffNeClosed = null,
         cutOffNwClosed = null,
         cutOffCrownClosed = null;
-
+    
     /* class constructor */
     function SplitDesktop(config) {
         SplitDesktop.superclass.constructor.apply(this, arguments);
     }
-
+    
     SplitDesktop.NAME = "splitDesktop";
-
-
+    
+    
     SplitDesktop.ATTRS = {
-
+    
         boundingBox : {
             value: HTML
         },
@@ -202,23 +202,23 @@ Corresponding nodes are fetched after configuration based on updated selector
         }
         
     };
-
-
+    
+    
     Y.extend(SplitDesktop, Y.Widget, {
-
+    
         initializer: function (config) {
             var BASE_URL = this.get('baseUrl'),
                 i,
                 HANDLE_IMG_URL = BASE_URL + PATH_TO_IMAGES + HANDLE_IMG,
-				ne,
-				m,
-				c;
+                ne,
+                m,
+                c;
                 
             HANDLE_IMG_TPL = IMG_OPEN_TPL + ID_OPEN_TPL + DEF_PREFIX + HANDLE_ID + ID_CLOSE_TPL + CLASS_ACTIVE_TPL + SRC_OPEN_TPL + HANDLE_IMG_URL + SRC_CLOSE_TPL + IMG_CLOSE_TPL;
             this.resizerNode = Y.one(RESIZER_SELECTOR);
             handleImgNode = Y.Node.create(HANDLE_IMG_TPL, this.resizerNode);
             this.resizerNode.append(handleImgNode);
-			this.secondaryNode = Y.one(SECONDARY_SELECTOR);
+            this.secondaryNode = Y.one(SECONDARY_SELECTOR);
             for (i in config) {
                 if (config.hasOwnProperty(i)) {
                     switch (i) {
@@ -242,14 +242,14 @@ Corresponding nodes are fetched after configuration based on updated selector
                     case PATH_TO_IMAGES_CONF:
                     case BORDER_PIX_CONF:
                     case HANDLE_IMG_CONF:
-                    /**
-If base url is on CDN we will either have inside Y.config a property of 'gallery' or alternatively fullpath.
-In case we have gallery => assume CDN (Y.Env.cdn is the base url)
-In case we have fullpath => assume js file is inside root of package basedir (Y.config.fullpath ) is the baseurl
-*/
+    /**
+    If base url is on CDN we will either have inside Y.config a property of 'gallery' or alternatively fullpath.
+    In case we have gallery => assume CDN (Y.Env.cdn is the base url)
+    In case we have fullpath => assume js file is inside root of package basedir (Y.config.fullpath ) is the baseurl
+    */
                         DRAG_HERE_IMG_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(DRAG_HERE_IMG_CONF);
                         Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.main).setStyle(BACKGROUNDIMAGE, 'url("' + DRAG_HERE_IMG_URL + '")');
-
+    
                         if (i === BORDER_PIX_CONF || i === PATH_TO_IMAGES_CONF) {
                             BORDER_PIX_URL = this.get(PATH_TO_IMAGES_CONF) + this.get(BORDER_PIX_CONF);
                             Y.one(POUND + DEF_PREFIX + FULL_DESKTOP.nw).setStyle(BACKGROUNDIMAGE, 'url("' + BORDER_PIX_URL + '")');
@@ -290,121 +290,122 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                     }
                 }
             }
-
+    
             /* some events to be used by subclasses to focus on diff areas */
-			
+            
             this.publish(E_ENTER, {
                 broadcast: 2,
-				emitFacade: false
+                emitFacade: false
             });
-			
+            
             this.publish(E_CONFIRM, {
                 broadcast: 2,
-				emitFacade: false
+                emitFacade: false
             });
             
             this.publish(E_DRAG + E_INIT, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_DRAG + E_START, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_DRAG + E_END, {
                 broadcast: 2,
-				emitFacade: false
+                emitFacade: false
             });
             
             this.publish(E_CLOSE + E_NE, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_CLOSE + E_NW, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_CLOSE + E_CROWN, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_OPEN + E_CROWN, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_OPEN + E_NE, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             
             this.publish(E_OPEN + E_NW, {
-				broadcast: 2,
-				emitFacade: false
+                broadcast: 2,
+                emitFacade: false
             });
             /**
-			 * Entering in an area from the handle (after that the handle has been dragEnd)
-			 * sets an attribute or flag to signla that the component is in confirming mode
-			 * the attribute is removed at the first coming hover.
-			 * If the user clicks on an area when in confirming mode then that area is
-			 * confirmed as 'open' at those xy
-			 * 
-			 * confirms this area's size as of 'open status' (confirm event)			 *
-			 * Entering in an area from anywhere else just fires a
-			 * enter event, and recalls the open status
-			 * @todo refactor avoiding combining if with switch and use a map object instead
-			 */ 
+             * Entering in an area from the handle (after that the handle has been dragEnd)
+             * sets an attribute or flag to signla that the component is in confirming mode
+             * the attribute is removed at the first coming hover.
+             * If the user clicks on an area when in confirming mode then that area is
+             * confirmed as 'open' at those xy
+             * 
+             * confirms this area's size as of 'open status' (confirm event)			 *
+             * Entering in an area from anywhere else just fires a
+             * enter event, and recalls the open status
+             * @todo refactor avoiding combining if with switch and use a map object instead
+             */ 
             this._over = function (e) {
-				var realenter = DEF_PREFIX + HANDLE_ID !== e.relatedTarget.get('id') ? true : false;
-				if(!this.get(ISDRAGGING_CONF)){
-					switch (POUND + e.currentTarget.get('id')){
-						case SECONDARY_SELECTOR:
-							if(realenter){
-								this.fire(E_ENTER, {t: E_NW});
-							}else{
-								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM, {t: E_NW});
-								}
-							}
-							break;
-						case POUND + DEF_PREFIX + FULL_DESKTOP.borders:
-							if(realenter){
-								this.fire(E_ENTER, {t: E_NE});
-							}else{
-								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM, {t: E_NE});
-								}
-							}
-							break;
-						case MAIN_SELECTOR:
-							if(realenter){
-								this.fire(E_ENTER, {t: E_MAIN});
-							}else{
-								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM, {t: E_MAIN});
-								}
-							}
-							break;
-						case POUND + DEF_PREFIX + HANDLE_ID:
-							CAN_CONFIRM = false;
-							
-							break;
-					}
-				}
+                var realenter = DEF_PREFIX + HANDLE_ID !== e.relatedTarget.get('id') ? true : false;
+                if(!this.get(ISDRAGGING_CONF)){
+                    switch (POUND + e.currentTarget.get('id')){
+                        case SECONDARY_SELECTOR:
+                            if(realenter){
+                                this.fire(E_ENTER, {t: E_NW});
+                            }else{
+                                if(CAN_CONFIRM) {
+                                    this.fire(E_CONFIRM, {t: E_NW});
+                                }
+                            }
+                            break;
+                        case POUND + DEF_PREFIX + FULL_DESKTOP.borders:
+                            if(realenter){
+                                this.fire(E_ENTER, {t: E_NE});
+                            }else{
+                                if(CAN_CONFIRM) {
+                                    this.fire(E_CONFIRM, {t: E_NE});
+                                }
+                            }
+                            break;
+                        case MAIN_SELECTOR:
+                            if(realenter){
+                                this.fire(E_ENTER, {t: E_MAIN});
+                            }else{
+                                if(CAN_CONFIRM) {
+                                    this.fire(E_CONFIRM, {t: E_MAIN});
+                                }
+                            }
+                            break;
+                        case POUND + DEF_PREFIX + HANDLE_ID:
+                            CAN_CONFIRM = false;
+                            
+                            break;
+                    }
+                }
             };
-			
+            
             this._out = function (e) {
                 return;
             };
             
             Y.one(WRAPPER_SELECTOR).delegate("hover", this._over, this._out, ".sdt-active", this);
+            Y.one(WRAPPER_SELECTOR).delegate("click", this._handleClick, ".sdt-anim", this);
         },
-
+    
         renderUI : function () {
             
             /* make the handle draggable */
@@ -413,25 +414,25 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                 constrain2node: WRAPPER_SELECTOR
             });
         },
-
+    
         bindUI : function () {
             ddHandle.on('drag:start', this._onDragStart, this);
             ddHandle.on('drag:drag', this._onDragDrag, this);
             ddHandle.on('drag:end', this._onDragEnd, this);
             
         },
-
+    
         syncUI : function () {
             /* Now make the page visible */
             Y.one(HTML).setStyle('display', 'block');
-
+    
         },
         
-        /**
-* @protected
-*
-*/
-
+    /**
+    * @protected
+    *
+    */
+    
         _onDragStart : function (e) {
             /* remove background from main */
             mainNode = Y.one(MAIN_SELECTOR);
@@ -449,13 +450,13 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                 break;
             }
         },
-
+    
         _onDragDrag : function (e) {
-
+    
             /* get values */
             var deltaW = parseInt(e.info.offset[0], 10),
                 deltaH = parseInt(e.info.offset[1], 10);
-
+    
             totW = w - deltaW;
             totH = h + deltaH;
             
@@ -475,27 +476,27 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             this._isPaneClosed(IS_CLOSE_CROWN_CONF, E_CROWN, cutOffCrownClosed, totH, false);
             this.resizerNode.setStyle(WIDTH, totW);
             this.resizerNode.setStyle(HEIGHT, totH);
-
+    
             this.secondaryNode.setStyle(WIDTH, PAGE_DEF_WIDTH - totW + MARGIN + PX);
             this.secondaryNode.setStyle(HEIGHT, totH + PX);
         },
-
+    
         _onDragEnd : function (e) {
-/*
-reposition to 00 pos in resizer window
-the window width might have changed from the drag:start due to scrollbars,
-hence the current x y is not necessarily at the bottom left corner of the window
-*/
-			h = parseInt(this.resizerNode.getStyle(HEIGHT).toString().replace(PX, ''), 10);
+    /*
+    reposition to 00 pos in resizer window
+    the window width might have changed from the drag:start due to scrollbars,
+    hence the current x y is not necessarily at the bottom left corner of the window
+    */
+            h = parseInt(this.resizerNode.getStyle(HEIGHT).toString().replace(PX, ''), 10);
             w = parseInt(this.resizerNode.getStyle(WIDTH).toString().replace(PX, ''), 10);
             this.fire(E_DRAG + E_END, {x: w, y: h});
-			CAN_CONFIRM = true;
+            CAN_CONFIRM = true;
             this.set(ISDRAGGING_CONF, false);
             this._repositionHandle();
         },
                 
         _getBaseUrl : function () {
-			var url;
+            var url;
             if(Y.config.modules){
                 if(Y.config.modules[GALLERYSPLITDESKTOP]){
                     /* defined as single module */
@@ -515,7 +516,7 @@ hence the current x y is not necessarily at the bottom left corner of the window
             }else if(Y.config.gallery){
                 /* source is general gallery url */
                 return Y.Env.base + Y.config.gallery + '/build/gallery-split-desktop/';
-
+    
             }else if(Y.config.fullpath){
                 //extract root, assets relative to root
                 url = Y.config.fullpath;
@@ -583,9 +584,9 @@ hence the current x y is not necessarily at the bottom left corner of the window
             handleImgNode.setStyle('top', '');
             
         }
-
+    
     });
-
+    
     Y.namespace('Widget').SplitDesktop = SplitDesktop;
 
 
