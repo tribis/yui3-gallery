@@ -301,35 +301,25 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             }
 
             /* some events to be used by subclasses to focus on diff areas */
-
-            this.publish(E_ENTER + E_MAIN, {
-                broadcast: 2
-            });
-
-            this.publish(E_ENTER + E_NE, {
-                broadcast: 2
-            });
-
-            this.publish(E_ENTER + E_NW, {
-                broadcast: 2
+			
+            this.publish(E_ENTER, {
+                broadcast: 2,
+				emitFacade: false
             });
 			
-            this.publish(E_CONFIRM + E_MAIN, {
-                broadcast: 2
-            });
-
-            this.publish(E_CONFIRM + E_NE, {
-                broadcast: 2
-            });
-
-            this.publish(E_CONFIRM + E_NW, {
-                broadcast: 2
+            this.publish(E_CONFIRM, {
+                broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_DRAG + E_INIT, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_DRAG + E_START, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_DRAG + E_END, {
@@ -338,25 +328,42 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             });
             
             this.publish(E_CLOSE + E_NE, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_CLOSE + E_NW, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_CLOSE + E_CROWN, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_OPEN + E_CROWN, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_OPEN + E_NE, {
+				broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_OPEN + E_NW, {
+				broadcast: 2,
+				emitFacade: false
             });
             /**
 			 * Entering in an area from the handle (after that the handle has been dragEnd)
-			 * confirms that area's size as of 'open status' (setOpen event)			 *
+			 * sets an attribute or flag to signla that the component is in confirming mode
+			 * the attribute is removed at the first coming hover.
+			 * If the user clicks on an area when in confirming mode then that area is
+			 * confirmed as 'open' at those xy
+			 * 
+			 * confirms this area's size as of 'open status' (confirm event)			 *
 			 * Entering in an area from anywhere else just fires a
 			 * enter event, and recalls the open status
 			 * @todo refactor avoiding combining if with switch and use a map object instead
@@ -368,28 +375,28 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
 						case SECONDARY_SELECTOR:
 							Y.log("related is: " + e.relatedTarget.get('id'), 'info', SplitDesktop.NAME);
 							if(realenter){
-								this.fire(E_ENTER + E_NW);
+								this.fire(E_ENTER, {t: E_NW});
 							}else{
 								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM + E_NW);
+									this.fire(E_CONFIRM, {t: E_NW});
 								}
 							}
 							break;
 						case POUND + DEF_PREFIX + FULL_DESKTOP.borders:
 							if(realenter){
-								this.fire(E_ENTER + E_NE);
+								this.fire(E_ENTER, {t: E_NE});
 							}else{
 								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM + E_MAIN);
+									this.fire(E_CONFIRM, {t: E_NE});
 								}
 							}
 							break;
 						case MAIN_SELECTOR:
 							if(realenter){
-								this.fire(E_ENTER + E_MAIN);
+								this.fire(E_ENTER, {t: E_MAIN});
 							}else{
 								if(CAN_CONFIRM) {
-									this.fire(E_CONFIRM + E_MAIN);
+									this.fire(E_CONFIRM, {t: E_MAIN});
 								}
 							}
 							break;
@@ -406,6 +413,7 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             };
             
             Y.one(WRAPPER_SELECTOR).delegate("hover", this._over, this._out, ".sdt-active", this);
+			Y.one(WRAPPER_SELECTOR).delegate("click", this._handleClick, ".sdt-active", this);
         },
 
         renderUI : function () {
