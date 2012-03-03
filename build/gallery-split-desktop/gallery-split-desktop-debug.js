@@ -360,6 +360,11 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             });
             /**
 			 * Entering in an area from the handle (after that the handle has been dragEnd)
+			 * sets an attribute or flag to signla that the component is in confirming mode
+			 * the attribute is removed at the first coming hover.
+			 * If the user clicks on an area when in confirming mode then that area is
+			 * confirmed as 'open' at those xy
+			 * 
 			 * confirms this area's size as of 'open status' (confirm event)			 *
 			 * Entering in an area from anywhere else just fires a
 			 * enter event, and recalls the open status

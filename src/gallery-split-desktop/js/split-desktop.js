@@ -413,7 +413,6 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             };
             
             Y.one(WRAPPER_SELECTOR).delegate("hover", this._over, this._out, ".sdt-active", this);
-			Y.one(WRAPPER_SELECTOR).delegate("click", this._handleClick, ".sdt-active", this);
         },
 
         renderUI : function () {
