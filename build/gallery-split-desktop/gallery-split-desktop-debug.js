@@ -21,7 +21,7 @@ var PX = 'px',
         E_CROWN = 'Crown',
         E_NE = 'NE',
         E_NW = 'NW',
-		E_CONFIRM = 'confirm',
+        E_CONFIRM = 'confirm',
         PAGE_DEF_WIDTH = 960,
         NW_MIN_WIDTH = 150,
         DEF_MAIN_HEIGHT = 700,
@@ -65,7 +65,7 @@ var PX = 'px',
         MAIN_HEIGHT_CONF = 'mainHeight',
         CROWN_HEIGHT_CONF = 'crownHeight',
         ISDRAGGING_CONF = 'isDragging',
-		CAN_CONFIRM = false,
+        CAN_CONFIRM = false,
         PREFIX_CONF = 'prefix',
         CLOSE_CROWN_CONF = 'closeCrownHeight',
         CLOSE_NW_CONF = 'closeNWWidth',
@@ -305,32 +305,26 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             /* some events to be used by subclasses to focus on diff areas */
 
             this.publish(E_ENTER + E_MAIN, {
-                bubbles: true,
                 broadcast: 2
             });
 
             this.publish(E_ENTER + E_NE, {
-                bubbles: true,
                 broadcast: 2
             });
 
             this.publish(E_ENTER + E_NW, {
-                bubbles: true,
                 broadcast: 2
             });
 			
             this.publish(E_CONFIRM + E_MAIN, {
-                bubbles: true,
                 broadcast: 2
             });
 
             this.publish(E_CONFIRM + E_NE, {
-                bubbles: true,
                 broadcast: 2
             });
 
             this.publish(E_CONFIRM + E_NW, {
-                bubbles: true,
                 broadcast: 2
             });
             
@@ -341,6 +335,8 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             });
             
             this.publish(E_DRAG + E_END, {
+                broadcast: 2,
+				emitFacade: false
             });
             
             this.publish(E_CLOSE + E_NE, {
@@ -501,7 +497,9 @@ reposition to 00 pos in resizer window
 the window width might have changed from the drag:start due to scrollbars,
 hence the current x y is not necessarily at the bottom left corner of the window
 */
-            this.fire(E_DRAG + E_END);
+			h = parseInt(this.resizerNode.getStyle(HEIGHT).toString().replace(PX, ''), 10);
+            w = parseInt(this.resizerNode.getStyle(WIDTH).toString().replace(PX, ''), 10);
+            this.fire(E_DRAG + E_END, {x: w, y: h});
 			CAN_CONFIRM = true;
             this.set(ISDRAGGING_CONF, false);
             this._repositionHandle();
