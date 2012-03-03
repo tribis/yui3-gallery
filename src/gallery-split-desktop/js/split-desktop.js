@@ -19,6 +19,7 @@ var PX = 'px',
         E_CROWN = 'Crown',
         E_NE = 'NE',
         E_NW = 'NW',
+        E_CONFIRM = 'confirm',
         PAGE_DEF_WIDTH = 960,
         NW_MIN_WIDTH = 150,
         DEF_MAIN_HEIGHT = 700,
@@ -62,6 +63,7 @@ var PX = 'px',
         MAIN_HEIGHT_CONF = 'mainHeight',
         CROWN_HEIGHT_CONF = 'crownHeight',
         ISDRAGGING_CONF = 'isDragging',
+        CAN_CONFIRM = false,
         PREFIX_CONF = 'prefix',
         CLOSE_CROWN_CONF = 'closeCrownHeight',
         CLOSE_NW_CONF = 'closeNWWidth',
@@ -314,6 +316,21 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
                 bubbles: true,
                 broadcast: 2
             });
+			
+            this.publish(E_CONFIRM + E_MAIN, {
+                bubbles: true,
+                broadcast: 2
+            });
+
+            this.publish(E_CONFIRM + E_NE, {
+                bubbles: true,
+                broadcast: 2
+            });
+
+            this.publish(E_CONFIRM + E_NW, {
+                bubbles: true,
+                broadcast: 2
+            });
             
             this.publish(E_DRAG + E_INIT, {
             });
@@ -341,27 +358,53 @@ In case we have fullpath => assume js file is inside root of package basedir (Y.
             
             this.publish(E_OPEN + E_NW, {
             });
-            
+            /**
+			 * Entering in an area from the handle (after that the handle has been dragEnd)
+			 * confirms that area's size as of 'open status' (setOpen event)			 *
+			 * Entering in an area from anywhere else just fires a
+			 * enter event, and recalls the open status
+			 * @todo refactor avoiding combining if with switch and use a map object instead
+			 */ 
             this._over = function (e) {
-                switch (POUND + e.currentTarget.get('id')){
-                case SECONDARY_SELECTOR:
-                    if(!this.get(ISDRAGGING_CONF)){
-                        this.fire(E_ENTER + E_NW);
-                    }
-                    break;
-                case RESIZER_SELECTOR:
-                    if(!this.get(ISDRAGGING_CONF)){
-                        this.fire(E_ENTER + E_NE);
-                    }
-                    break;
-                case MAIN_SELECTOR:
-                    if(!this.get(ISDRAGGING_CONF)){
-                        this.fire(E_ENTER + E_MAIN);
-                    }
-                    break;
-                }
+				var realenter = DEF_PREFIX + HANDLE_ID !== e.relatedTarget.get('id') ? true : false;
+				if(!this.get(ISDRAGGING_CONF)){
+					switch (POUND + e.currentTarget.get('id')){
+						case SECONDARY_SELECTOR:
+							Y.log("related is: " + e.relatedTarget.get('id'), 'info', SplitDesktop.NAME);
+							if(realenter){
+								this.fire(E_ENTER + E_NW);
+							}else{
+								if(CAN_CONFIRM) {
+									this.fire(E_CONFIRM + E_NW);
+								}
+							}
+							break;
+						case POUND + DEF_PREFIX + FULL_DESKTOP.borders:
+							if(realenter){
+								this.fire(E_ENTER + E_NE);
+							}else{
+								if(CAN_CONFIRM) {
+									this.fire(E_CONFIRM + E_MAIN);
+								}
+							}
+							break;
+						case MAIN_SELECTOR:
+							if(realenter){
+								this.fire(E_ENTER + E_MAIN);
+							}else{
+								if(CAN_CONFIRM) {
+									this.fire(E_CONFIRM + E_MAIN);
+								}
+							}
+							break;
+						case POUND + DEF_PREFIX + HANDLE_ID:
+							CAN_CONFIRM = false;
+							
+							break;
+					}
+				}
             };
-            
+			
             this._out = function (e) {
                 return;
             };
@@ -457,6 +500,7 @@ the window width might have changed from the drag:start due to scrollbars,
 hence the current x y is not necessarily at the bottom left corner of the window
 */
             this.fire(E_DRAG + E_END);
+			CAN_CONFIRM = true;
             this.set(ISDRAGGING_CONF, false);
             this._repositionHandle();
         },
