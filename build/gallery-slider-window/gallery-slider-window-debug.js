@@ -630,4 +630,4 @@ YUI.add('gallery-slider-window', function(Y) {
     Y.namespace("Overlay").SliderWindow = SliderWindow;
 
 
-}, '@VERSION@' ,{requires:['overlay', 'node', 'anim-base','anim-node','anim-easing', 'substitute']});
+}, '@VERSION@' ,{requires:['overlay', 'node', 'anim-base','anim-easing', 'substitute']});
