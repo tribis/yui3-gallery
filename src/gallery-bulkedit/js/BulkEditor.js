@@ -2,6 +2,7 @@
  * A widget for editing many records at once.
  *
  * @module gallery-bulkedit
+ * @main gallery-bulkedit
  */
 
 /**
@@ -34,8 +35,8 @@ BulkEditor.NAME = "bulkedit";
 BulkEditor.ATTRS =
 {
 	/**
-	 * @config ds
-	 * @type {BulkEditDataSource}
+	 * @attribute ds
+	 * @type {DataSource.BulkEdit}
 	 * @writeonce
 	 */
 	ds:
@@ -53,7 +54,7 @@ BulkEditor.ATTRS =
 	 * gallery-formmgr-css-validation).  Derived classes can require
 	 * additional keys.
 	 *
-	 * @config fields
+	 * @attribute fields
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -68,7 +69,7 @@ BulkEditor.ATTRS =
 	 * expects it to be configured to display ValidationPageLinks, so the
 	 * user can see which pages have errors that need to be fixed.
 	 *
-	 * @config paginator
+	 * @attribute paginator
 	 * @type {Paginator}
 	 * @writeonce
 	 */
@@ -84,7 +85,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Extra key/value pairs to pass in the DataSource request.
 	 * 
-	 * @config requestExtra
+	 * @attribute requestExtra
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -98,7 +99,7 @@ BulkEditor.ATTRS =
 	/**
 	 * CSS class used to temporarily highlight a record.
 	 *
-	 * @config pingClass
+	 * @attribute pingClass
 	 * @type {String}
 	 * @default "yui3-bulkedit-ping"
 	 */
@@ -111,7 +112,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Duration in seconds that pingClass is applied to a record.
 	 *
-	 * @config pingTimeout
+	 * @attribute pingTimeout
 	 * @type {Number}
 	 * @default 2
 	 */
@@ -142,16 +143,13 @@ var default_page_size = 1e9,
 	field_container_class_prefix = field_container_class + '-',
 	field_class_prefix           = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'field') + '-',
 
-	class_re_prefix = '(?:^|\\s)(?:',
-	class_re_suffix = ')(?:\\s|$)',
-
 	status_prefix  = 'bulkedit-has',
 	status_pattern = status_prefix + '([a-z]+)',
-	status_re      = new RegExp(class_re_prefix + status_pattern + class_re_suffix),
+	status_re      = new RegExp(Y.Node.class_re_prefix + status_pattern + Y.Node.class_re_suffix),
 
 	record_status_prefix  = 'bulkedit-hasrecord',
 	record_status_pattern = record_status_prefix + '([a-z]+)',
-	record_status_re      = new RegExp(class_re_prefix + record_status_pattern + class_re_suffix),
+	record_status_re      = new RegExp(Y.Node.class_re_prefix + record_status_pattern + Y.Node.class_re_suffix),
 
 	message_container_class = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'message-text'),
 
@@ -192,6 +190,8 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Reloads the current page of records.  This will erase any changes
 	 * unsaved changes!
+	 * 
+	 * @method reload
 	 */
 	reload: function()
 	{
@@ -244,6 +244,8 @@ Y.extend(BulkEditor, Y.Widget,
 
 	/**
 	 * Save the modified values from the current page of records.
+	 * 
+	 * @method saveChanges
 	 */
 	saveChanges: function()
 	{
@@ -266,6 +268,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Retrieve *all* the data.  Do not call this if you use server-side
 	 * pagination.
 	 * 
+	 * @method getAllValues
 	 * @param callback {Object} callback object which will be invoked by DataSource
 	 */
 	getAllValues: function(callback)
@@ -285,6 +288,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
 	 */
 	getChanges: function()
@@ -297,6 +301,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method insertRecord
 	 * @param index {Number} insertion index
 	 * @param record {Object|String} record to insert or id of record to clone
 	 * @return {String} the new record's id
@@ -323,6 +328,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method removeRecord
 	 * @param index {Number}
 	 * @return {Boolean} true if the record was successfully removed
 	 */
@@ -347,6 +353,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldConfig
 	 * @param key {String} field key
 	 * @return {Object} field configuration
 	 */
@@ -357,6 +364,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordContainerId
 	 * @param record {String|Object} record id or record object
 	 * @return {String} id of DOM element containing the record's input elements
 	 */
@@ -374,6 +382,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldId
 	 * @param record {String|Object} record id or record object
 	 * @param key {String} field key
 	 * @return {String} id of DOM element containing the field's input element
@@ -386,6 +395,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordAndFieldKey
 	 * @param key {String|Node} field key or field input element
 	 * @return {Object} object containing record and field_key
 	 */
@@ -400,13 +410,14 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordId
 	 * @param obj {Object|Node} record object, record container, or any node inside record container
 	 * @return {String} record id
 	 */
 	getRecordId: function(
 		/* object/element */	obj)
 	{
-		if (Y.Lang.isObject(obj) && !(obj instanceof Y.Node))
+		if (Y.Lang.isObject(obj) && !obj._node)
 		{
 			return obj[ this.get('ds').get('uniqueIdKey') ];
 		}
@@ -423,6 +434,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordContainer
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @return {Node} node containing rendered record
 	 */
@@ -433,7 +445,7 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			var id = id_prefix + id_separator + record;
 		}
-		else if (record instanceof Y.Node)
+		else if (record && record._node)
 		{
 			return record.getAncestorByClassName(BulkEditor.record_container_class, true);
 		}
@@ -446,6 +458,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldContainer
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @param key {String} field key
 	 * @return {Node} node containing rendered field
@@ -459,6 +472,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldElement
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @param key {String} field key
 	 * @return {Node} field's input element
@@ -467,7 +481,7 @@ Y.extend(BulkEditor, Y.Widget,
 		/* string/object/element */	record,
 		/* string */				key)
 	{
-		if (record instanceof Y.Node)
+		if (record && record._node)
 		{
 			record = this.getRecordId(record);
 		}
@@ -478,6 +492,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Paginate and/or scroll to make the specified record visible.  Record
 	 * is pinged to help the user find it.
 	 * 
+	 * @method showRecordIndex
 	 * @param index {Number} record index
 	 */
 	showRecordIndex: function(
@@ -508,6 +523,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Paginate and/or scroll to make the specified record visible.  Record
 	 * is pinged to help the user find it.
 	 * 
+	 * @method showRecordId
 	 * @param id {Number} record id
 	 */
 	showRecordId: function(
@@ -525,6 +541,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * while.  Your CSS can use this class to highlight the record in some
 	 * way.
 	 * 
+	 * @method pingRecord
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 */
 	pingRecord: function(
@@ -545,8 +562,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Render the current page of records.
 	 *
-	 * @param response {Object} response from data source
+	 * @method _render
 	 * @protected
+	 * @param response {Object} response from data source
 	 */
 	_render: function(response)
 	{
@@ -580,8 +598,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Derived class should override to create a structure for the records.
 	 *
-	 * @param container {Node}
+	 * @method _renderContainer
 	 * @protected
+	 * @param container {Node}
 	 */
 	_renderContainer: function(
 		/* element */	container)
@@ -592,9 +611,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Derived class must override to create a container for the record.
 	 * 
+	 * @method _renderRecordContainer
+	 * @protected
 	 * @param container {Node}
 	 * @param record {Object} record data
-	 * @protected
 	 */
 	_renderRecordContainer: function(
 		/* element */	container,
@@ -607,9 +627,10 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Derived class can override if it needs to do more than just call
 	 * _renderField() for each field.
 	 * 
+	 * @method _renderRecord
+	 * @protected
 	 * @param container {Node} record container
 	 * @param record {Object} record data
-	 * @protected
 	 */
 	_renderRecord: function(
 		/* element */	container,
@@ -633,13 +654,14 @@ Y.extend(BulkEditor, Y.Widget,
 	 * If _renderRecord is not overridden, derived class must override this
 	 * function to render the field.
 	 * 
+	 * @method _renderField
+	 * @protected
 	 * @param o {Object}
 	 *	container {Node} record container,
 	 *	key {String} field key,
 	 *	value {Mixed} field value,
 	 *	field {Object} field configuration,
 	 *	record {Object} record data
-	 * @protected
 	 */
 	_renderField: function(
 		/* object */ o)
@@ -649,8 +671,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update the paginator to match the data source meta information.
 	 * 
-	 * @param response {Object} response from DataSource
+	 * @method _updatePaginator
 	 * @protected
+	 * @param response {Object} response from DataSource
 	 */
 	_updatePaginator: function(response)
 	{
@@ -664,6 +687,8 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Clear errors received from the server.  This clears all displayed
 	 * messages.
+	 * 
+	 * @method clearServerErrors
 	 */
 	clearServerErrors: function()
 	{
@@ -696,6 +721,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * error) or an object providing msg and type, where type can be
 	 * 'error', 'warn', 'info', or 'success'.
 	 * 
+	 * @method setServerErrors
 	 * @param page_errors {Array} list of page-level error messages
 	 * @param record_field_errors {Array} list of objects *in record display order*,
 	 *		each of which defines id (String), recordError (message),
@@ -735,6 +761,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update paginator to show which pages have errors.
 	 *
+	 * @method _updatePageStatus
 	 * @protected
 	 */
 	_updatePageStatus: function()
@@ -771,6 +798,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Validate the visible values (if using server-side pagination) or all
 	 * the values (if using client-side pagination or no pagination).
 	 * 
+	 * @method validate
 	 * @return {Boolean} true if all checked values are acceptable
 	 */
 	validate: function()
@@ -816,9 +844,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Validate the visible values.
 	 * 
+	 * @method _validateVisibleFields
+	 * @protected
 	 * @param container {Node} if null, uses contentBox
 	 * @return {Boolean} true if all checked values are acceptable
-	 * @protected
 	 */
 	_validateVisibleFields: function(
 		/* object */ container)
@@ -874,9 +903,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Validate the given elements.
 	 * 
+	 * @method _validateElements
+	 * @protected
 	 * @param nodes {NodeList}
 	 * @return {Boolean} true if all checked values are acceptable
-	 * @protected
 	 */
 	_validateElements: function(
 		/* array */ nodes)
@@ -964,8 +994,9 @@ Y.extend(BulkEditor, Y.Widget,
 	 * If the data is stored locally and we paginate, validate all of it
 	 * and mark the pages that have invalid values.
 	 * 
-	 * @return {Boolean} true if all checked values are acceptable
+	 * @method _validateAllPages
 	 * @protected
+	 * @return {Boolean} true if all checked values are acceptable
 	 */
 	_validateAllPages: function()
 	{
@@ -1040,6 +1071,8 @@ Y.extend(BulkEditor, Y.Widget,
 
 	/**
 	 * Clear all displayed messages.
+	 * 
+	 * @method _clearValidationMessages
 	 */
 	_clearValidationMessages: function()
 	{
@@ -1059,6 +1092,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Display a message for the specified field.
 	 * 
+	 * @method displayFieldMessage
 	 * @param e {Node} field input element
 	 * @param msg {String} message to display
 	 * @param type {String} message type:  error, warn, info, success
@@ -1103,6 +1137,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Display a message for the specified record.
 	 * 
+	 * @method displayRecordMessage
 	 * @param id {String} record id
 	 * @param msg {String} message to display
 	 * @param type {String} message type:  error, warn, info, success
@@ -1142,10 +1177,11 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method _getElementStatus
+	 * @protected
 	 * @param n {Node}
 	 * @param r {RegExp}
 	 * @return {Mixed} status or false
-	 * @protected
 	 */
 	_getElementStatus: function(
 		/* Node */	n,
@@ -1158,6 +1194,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update the status of the node, if the new status has higher precedence.
 	 *
+	 * @method _updateRecordStatus
 	 * @param bd {Node}
 	 * @param type {String} new status
 	 * @param p {String} pattern for extracting status
@@ -1189,18 +1226,14 @@ Y.extend(BulkEditor, Y.Widget,
 
 function cleanHTML(s)
 {
-	if (!s)
-	{
-		return '';
-	}
-
-	return s.toString()
-			.replace(/<\/?script>/ig, '')
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;');
+	return (s ? Y.Escape.html(s) : '');
 }
 
+/**
+ * @property Y.BulkEditor.error_msg_markup
+ * @type {String}
+ * @static
+ */
 BulkEditor.error_msg_markup = Y.Lang.sub('<div class="{c}"></div>',
 {
 	c: message_container_class

@@ -2,18 +2,34 @@ YUI.add('gallery-math', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-math
+ */
+
 /**********************************************************************
  * <p>Augments built-in JavaScript Math namespace with additional
  * mathematical functions.</p>
  * 
- * @module gallery-math
+ * @main gallery-math
  * @class Math
  */
 
 Y.mix(Math,
 {
 	/**
-	 * @return {number} sum of all the arguments (either passed separately or as an array)
+	 * @method sign
+	 * @static
+	 * @return {Number} +1 if value > 0, -1 if value < 0, else zero
+	 */
+	sign: function(v)
+	{
+		return (v < 0 ? -1 : (v > 0 ? +1 : 0));
+	},
+
+	/**
+	 * @method add
+	 * @static
+	 * @return {Number} sum of all the arguments (either passed separately or as an array)
 	 */
 	add: function()
 	{
@@ -29,7 +45,9 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)
+	 * @method addReciprocals
+	 * @static
+	 * @return {Number} sum of the reciprocals of all the arguments (either passed separately or as an array)
 	 */
 	addReciprocals: function()
 	{
@@ -47,7 +65,9 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @return {number} net value of N resistors in parallel (either passed separately or as an array)
+	 * @method parallel
+	 * @static
+	 * @return {Number} net value of N resistors in parallel (either passed separately or as an array)
 	 */
 	parallel: function()
 	{
@@ -55,7 +75,9 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @return {number} product of all the arguments (either passed separately or as an array)
+	 * @method multiply
+	 * @static
+	 * @return {Number} product of all the arguments (either passed separately or as an array)
 	 */
 	multiply: function()
 	{
@@ -71,8 +93,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param a {number} angle in degrees
-	 * @return {number} angle in radians
+	 * @method degreesToRadians
+	 * @static
+	 * @param a {Number} angle in degrees
+	 * @return {Number} angle in radians
 	 */
 	degreesToRadians: function(a)
 	{
@@ -80,8 +104,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param a {number} angle in radians
-	 * @return {number} angle in degrees
+	 * @method radiansToDegrees
+	 * @static
+	 * @param a {Number} angle in radians
+	 * @return {Number} angle in degrees
 	 */
 	radiansToDegrees: function(a)
 	{
@@ -89,8 +115,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} inverse hyperbolic cosine
+	 * @method acosh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} inverse hyperbolic cosine
 	 */
 	acosh: function(v)
 	{
@@ -98,8 +126,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} inverse hyperbolic sine
+	 * @method asinh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} inverse hyperbolic sine
 	 */
 	asinh: function(v)
 	{
@@ -107,8 +137,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} inverse hyperbolic tangent
+	 * @method atanh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} inverse hyperbolic tangent
 	 */
 	atanh: function(v)
 	{
@@ -116,8 +148,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} hyperbolic cosine
+	 * @method cosh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} hyperbolic cosine
 	 */
 	cosh: function(v)
 	{
@@ -126,8 +160,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} hyperbolic sine
+	 * @method sinh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} hyperbolic sine
 	 */
 	sinh: function(v)
 	{
@@ -136,8 +172,10 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @param v {number}
-	 * @return {number} hyperbolic sine
+	 * @method tanh
+	 * @static
+	 * @param v {Number}
+	 * @return {Number} hyperbolic sine
 	 */
 	tanh: function(v)
 	{
@@ -147,4 +185,4 @@ Y.mix(Math,
 });
 
 
-}, 'gallery-2012.01.04-22-09' ,{requires:['array-extras']});
+}, 'gallery-2012.05.16-20-37' ,{requires:['array-extras']});
